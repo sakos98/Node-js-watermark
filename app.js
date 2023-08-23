@@ -4,36 +4,36 @@ const fs = require('fs');
 
 const addTextWatermarkToImage = async function (inputFile, outputFile, text) {
   try {
-  const image = await Jimp.read(inputFile);
-  const font = await Jimp.loadFont(Jimp.FONT_SANS_128_BLACK);
-  const textData = {
-    text,
-    alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
-    alignmentY: Jimp.VERTICAL_ALIGN_MIDDLE,
-  };
+    const image = await Jimp.read(inputFile);
+    const font = await Jimp.loadFont(Jimp.FONT_SANS_128_BLACK);
+    const textData = {
+      text,
+      alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
+      alignmentY: Jimp.VERTICAL_ALIGN_MIDDLE,
+    };
 
-  image.print(font, 0, 0, textData, image.getWidth(), image.getHeight());
-  await image.quality(100).writeAsync(outputFile);
-} catch (error) {
-  console.log('Something went wrong... Try again!');
-}
+    image.print(font, 0, 0, textData, image.getWidth(), image.getHeight());
+    await image.quality(100).writeAsync(outputFile);
+  } catch (error) {
+    console.log('Something went wrong... Try again!');
+  }
 };
 
 const addImageWatermarkToImage = async function (inputFile, outputFile, watermarkFile) {
   try {
-  const image = await Jimp.read(inputFile);
-  const watermark = await Jimp.read(watermarkFile);
-  const x = image.getWidth() / 2 - watermark.getWidth() / 2;
-  const y = image.getHeight() / 2 - watermark.getHeight() / 2;
+    const image = await Jimp.read(inputFile);
+    const watermark = await Jimp.read(watermarkFile);
+    const x = image.getWidth() / 2 - watermark.getWidth() / 2;
+    const y = image.getHeight() / 2 - watermark.getHeight() / 2;
 
-  image.composite(watermark, x, y, {
-    mode: Jimp.BLEND_SOURCE_OVER,
-    opacitySource: 0.5,
-  });
-  await image.quality(100).writeAsync(outputFile);
-} catch (error) {
-  console.log('Something went wrong... Try again!');
-}
+    image.composite(watermark, x, y, {
+      mode: Jimp.BLEND_SOURCE_OVER,
+      opacitySource: 0.5,
+    });
+    await image.quality(100).writeAsync(outputFile);
+  } catch (error) {
+    console.log('Something went wrong... Try again!');
+  }
 };
 
 const prepareOutputFilename = (filename) => {
@@ -68,7 +68,7 @@ const startApp = async () => {
   if (!fs.existsSync('./img/' + options.inputImage)) {
     process.stdout.write('\nSomething went wrong... Try again.\n');
     return;
-}
+  }
 
   if (options.watermarkType === 'Text watermark') {
     const text = await inquirer.prompt([{
